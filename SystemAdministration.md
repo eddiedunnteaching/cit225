@@ -287,7 +287,7 @@ There are many filtering options to give you information about specific services
 
 ### Booting
 
-This is one of those topics that can be daunting and scary becuase if you have a problem here your system is not working at all. Gaining confidence in using and manipulating `GRUB` should help dispel some of this anxiety. 
+This is one of those topics that can be daunting and scary because if you have a problem here your system is not working at all. Gaining confidence in using and manipulating `GRUB` should help dispel some of this anxiety. 
 
 As we mentioned before the most common boot loader program is called `Grub`. Let's take a deeper dive.
 
@@ -497,7 +497,7 @@ The main feature that separates modern filesystems is called `journaling`. `Jour
 
 By far the most commonly used however is `ext4`. It is the default for all of the distributions I am aware.
 
-The main point is that you need three things to happen in order to be able to read and write files to a physical filesystem.
+The main point is that we need three things to happen in order to be able to read and write files to a physical filesystem.
 
 1. Create a Partition 
 2. Create a filesystem inside the partition.
@@ -509,6 +509,82 @@ A `mountpoint` is where in the tree of the currently running operating system a 
 
 If there is only one partition and one physical filesystem this mountpoint must be `/`. 
 
+You can have more than one disk mounted in a given `virtual filesystem` that makes up a running system. Each physical filesystem must have a place to be accessed (ie mountpoint).
+
+Outside of being able to boot more than one operating system, Another common practice is to make a separate partition for `/var/log` so that if we fill up that space the rest of your system will not crash. 
+
+You might also mount a filesystem on a remote machine to store things like user's home directories.
+
+Anytime we place a USB stick into a linux machine it will mount it somewhere in the directory tree so that it can be accessed `/media/` for instance.
+
+#### fdisk gdisk
+
+As we have seen in the installation process, before we can install a new Operating System we must first create at least one partition for the new operating system to live.
+
+In our case we just let the installer use all of the disk and it did the heavy lifting for us. We can also do this process more manually and after the installation process has been completed.
+
+We have discussed the difference between `MBR` and `GPT` partitioning. The classic partitioning tools for these are `fdisk` and `gdisk` respectively.
+
+Both of these tools are similar in the way they operate. In fact newer versions of `fdisk` can also deal with `GPT` partitions.
+
+You can use fdisk with `-l` in non-interactive mode but the easiest way to use `fdisk` is interactive mode. 
+
+When you run `fdisk` you must also specify a disk in which to perform the operations. If you are unsure which device is the correct one you can run commands like `lsblk` or `lsudb` to find the correct device file.
 
 
+![lsblk_fdisk](./images/lsblk_fdisk.png)
+
+
+```bash
+sudo fdisk /dev/sda 
+```
+
+Since this device is a `USB` Ubuntu installer that is automatically mounted (or at least attempted to be automatically mounted) we get a warning telling us that the device is mounted and you could lose data. Pro Tip: Whenever you are re-partitioning you are going to lose data. Just make sure you are losing data you don;t care about!
+
+![fdisk_warn](./images/fdisk_warn.png)
+
+
+Once we are in the app, the first command we might want to do is list the partitions that are already on the disk. We can do this with the `p` entry from the menu.
+
+
+![fdisk p](./images/fdisk_p.png)
+
+
+Here we see the partitions on our `USB` installer. Notice there are 4 partitions. It says `Microsoft` but the first and 3rd are  are `FAT` format that is more compatible and will allow the early stages of the boot to complete.
+
+Let's say we want to make this disk have one partition that we can use this device to store files. 
+
+What would we need to do?
+
+** Warning. Please make sure you have downloaded the `ISO` installer for your linux distribution to your machine before you start this exercise so you can recover **
+
+The first step would be to delete the existing partitions. We need to first remind ourselves what we can do in `fdisk` with the `m` entry.
+
+![fdisk help](./images/fdisk_help.png)
+
+We can see that `d` is the option that we want. Now we can delete all four partitions.
+
+![part del](./images/part_delete.png)
+
+** Note: At this point no changes have been written and if we exit at this point nothing would be done to the disk. **
+
+Let's go ahead and delete the partitions using using the `w` command to write the changes and exit `fdisk`.
+
+![write fail](./images/write_fail.png)
+
+Ooops! What happened? Why do we get an error?
+
+It is because the disk is mounted. Linux is trying to prevent you from shooting yourself in the foot and blowing away a mounted filesystem.
+
+What can we do to fix? What should have we done differently?
+
+The fix as you might imagine is to un-mount the disk first. We can do this with the `umount` command.
+
+![umount](./images/umount_ex.png)
+
+As it turns out `fdisk` did in fact remove the partitions. It did not remove the mount point which is why `fdisk` complained. Once we remove the mount point and relaunch `fdisk` we can see the partitions are in fact gone.
+
+![fdisk new](./images/fdisk_new.png)
+
+OK now we want to create a new filesystem on the USB drive to store our files.
 

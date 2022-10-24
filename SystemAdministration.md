@@ -201,9 +201,9 @@ modinfo nvidia | less
 
 Here we have the module that is responsible for `tls` security. That is the protocol that is used to encrypt your web traffic among other things.
 
-The list is rather long so this is a great opportunity to use our friend the `pipe` (`|`) operator and filter for what we are interested in seeing. Let's say we want to know about any intel related modules that are loaded.
+The full module list is rather long so this is a great opportunity to use our friend the `pipe` (`|`) operator and filter for what we are interested in seeing. Let's say we want to know about any intel related modules that are loaded.
 
-![tls_grep](./images/tls_grep.png)
+![tls_grep](./images/intel_grep.png)
 
 As the output indicates there are several places that `intel` shows up in various modules. Awesome.
 
@@ -422,7 +422,7 @@ sudo systemctl status fail2ban.service
 ```
 
 
-![bounce](./images/bouince_service.png)
+![bounce](./images/bounce_service.png)
 
 We can also disable a service so it will not start at the next boot like so...
 

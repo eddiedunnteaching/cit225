@@ -586,5 +586,107 @@ As it turns out `fdisk` did in fact remove the partitions. It did not remove the
 
 ![fdisk new](./images/fdisk_new.png)
 
-OK now we want to create a new filesystem on the USB drive to store our files.
+Now we have our partition created. Step 1 accomplished. Next we want to create a new filesystem on our new partition of the USB drive to store our files.
+
+This is accomplished by `mkfs`. `mkfs` will do `ext2`, `ext3` or `ext4`. Since we are using `ext4` the command would be:
+
+```bash
+sudo mkfs.ext4 /dev/sda1
+```
+Note this time we specified the partition and not the disk like we did with `fdisk`
+
+![mkfs](./images/mkfs.png)
+
+As you can see the formatting process creates multiple `super blocks`. `super blocks` are like entry gateways into the filesystem. They know where everything else is. There are multiples in case some are damaged along the way in the life of the filesystem on your drive.
+
+OK now we have step 2 of 3 completed.... 
+
+But before that
+
+Let's switch gears a bit first and grab the `iso` installer for Debian 11. Hint `64-bit PC netinst iso` is the one you want. Go to the following site:
+
+![Ubuntu downloads](https://www.debian.org/download)
+
+You will notice on this debian download page there are sha512 checksums. `SHA512` is one of those hashing algorithms that we haev discussed before. In this case the hashing algorithm is used to verify the integrity of the downloaded iso file. In order to do this you can use the program `sha512sum` with the sole argument as the debian iso file.
+
+```bash
+sha512sum debian-11.5.0-amd64-netinst.iso
+```
+
+![sha512sum](./images/sha512sum.png)
+
+The output you get from the command should match what is found on the link on the [page](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA512SUMS). If you don't trust what is on the page at all you can verify that the signatures were signed by debian. I will leave that as an exercise for you to complete on your own. :)
+
+If you just clicked on the link you should have an `iso` file in `~/Downloads`
+
+```
+ls ~/Downloads
+```
+
+Ok back to step 3 on using a filesystem... Mounting
+
+You already know what `mounting`. You do it (or it is done for you) every time you insert a USB stick into a computer. 
+
+Whether it is Windows, Mac or Linux an operating system  will typically attempt to automatically `mount` that device. In Ubuntu when this happens the mountpoint is located in `/media/<your username>`. Since we have just formatted this filesystem on this flash drive and not inserted it. It is not yet mounted.
+
+In Linux you can mount a filesytem anywhere. In fact to show you what I mean let's do something you may or may down (probably not) want to do in real life.
+
+Let's say that we want the files we download from the internet by default to be stored on our flash drive so that we can take them with us easily. 
+
+
+Make sure you are not in `~/Downloads` and let's mount the flash drive in `~/Downloads`
+
+```bash
+sudo mount /dev/sda1 ~/Downloads
+
+```
+
+At this point when you write files to  `~/Downloads` they will be written to the flash drive we just prepared.
+
+Now let's do  `ls` again.
+
+```
+ls ~/Downloads
+```
+
+![where_deb](./images/where_deb.png)
+
+
+Where is the debian iso?
+
+It is still there it is just not visible because you mounted another filesystem in that directory. Something to keep in mind. 
+
+Another thing to note is the `lost+found`. We will talk about that a bit later.
+
+Alright let's make things normal again and unmount the flash drive.
+
+```bash
+sudo umount /dev/sda1
+```
+
+I want you guys to have experience installing more than one linux distribution. The next one we will try out is... ??? debian!
+
+Let's prepare this same USB stick as installation media. We will use the `dd` command to do this. 
+
+If you are not already make sure you are in `~/Downloads` and have unmounted the flash drive. You cannot mount or unmount the your current working directory.
+
+```bash
+sudo dd if=./debian-11.5.0-amd64-netinst.iso of=/dev/sda
+```
+
+This command will take a long time to complete and will not show any progress. 
+If successful this command will show summary output.
+
+![dd](./images/dd.png)
+
+Now let's load the flash drive with fdisk and see what it says:
+
+![fdisk dd](./images/fdisk_dd.png)
+
+The output indicates that this is an `iso9660` format and has two partitions that we did not create. Looks like it worked.
+
+Your task is to use this USB stick and install `debian` 11.
+
+Remember that you can get into the UEFI/BIOS on the Dell laptops by strategically hitting `F12` very shortly after you see teh Dell logo appear.
+
 

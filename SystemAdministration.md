@@ -699,7 +699,85 @@ Your task is to use this USB stick and install `debian` 11.
 
 Remember that you can get into the UEFI/BIOS on the Dell laptops by strategically hitting `F12` very shortly after you see the Dell logo appear.
 
-When you get to the end of the installer uncheck the two Desktop options at the top and make sure teh `OpenSSH Server` is checked to complete the installation.
+Once you get the installer to load let's select `Install` (The second option)
 
+![deb splash](./images/deb_splash.png)
 
+Please select all default options until you get to the screen where you set the hostname.
+
+The hostname is the name that this computer will be known by to other computers (and humans). You can set whatever you like. Be creative.
+
+This menu is called a `TUI` text user interface. The idea is that works like a graphical interface in that it shows things visually but you still must use the keyboard to interact.
+
+The key to navigate these `TUI`'s is the `TAB` key. 
+
+Once you have decided on a name, hit `TAB` to get to the continue button and hit enter.
+
+![deb hostname](./images/deb_hostname.png)
+
+We do not have a proxy server so you can just hit `TAB` and enter on the next screen.
+
+Next we will set and confirm the `root` password. Please pick something you can remember. Ideally this would be a high entropy long password that no one knows but is stored somewhere safe.
+
+After we complete the `root` setup, next we create the user that we will use to log in to the machine.
+
+The first screen asks for the full name:
+
+![new user](./images/new_user.png)
+
+And the next asks for the username.
+
+![new username](./images/new_username.png)
+
+After you set the password for the first user. The install continues to the time zone selection. We select the appropriate choice and continue on to the disk setup. 
+
+In our case we want to select eh 3rd option to install with LVM and use encryption.
+
+![disk part install](./images/disk_part_install.png)
+
+The next step is to select the disk we will use to install. For these laptops we will use the `nvme` drive. 
+
+On the next screen for simplicity let's select the first option to use one partition for everything.
+
+It lastly asks to write changes to the disk and since we selected encryption it will erase the disk before it does the rest.
+
+[data erase](./images/data_erase.png)
+
+Why does it do this?
+
+It is because the partition table is stored on a very small portion of the disk and the normal formatting process does not actually go back and write over what was previously on the disk. Someone with the proper tools could scan the disk even after a format and still recover files from what was on the disk from the last time it was used. 
+
+The last step is to set an encryption password. This is yet another password that will be required to decrypt the hard drive and boot the machine. This prevents the security issue from the previous paragraph as while there may be `orphan` data, it will be encrypted.
+
+![encrypt_disk](./images/encrypt_disk.png)
+
+Select default options and allow the installer to do its thing.
+
+When you get to the end of the installer uncheck the two Desktop options at the top and make sure the `OpenSSH Server` is checked to complete the installation. (Hint: Space Bar selects and un-selects)
+
+![no gui deb](./imges/no_gui_deb.png)
+
+When you get to the `GRUB` setup. It will ask you to select a disk. You must arrow down to select the nvme drive.
+
+![grub install](./images/grub_install.png)
+
+Note: This install required you to enter three passwords. One for the user you create, one for the root user, and the final one for the disk encryption.  
+
+When you are finished with the install. Reboot into your new Debian OS and log in as your new user.
+
+![dark star](./images/dark_star.png)
+
+There are two ways that we will typically use in order to gain `root` privileges. So far we have only seen `sudo`. `sudo` is more configurable and allows you to have more granularity over which commands a given user can or can't run as `root`. 
+
+Debian by default does not have `sudo` installed. Thankfully it does ship with it's grandmother `su`.
+
+`Su` just stands for `super user` and it will allow us to login as root to run commands. Let's do that now.
+
+```bash
+su -
+``` 
+
+The `-` at the end tells the command that we want a `login` shell.
+
+![dark star root](./images/dark_star.png)
 

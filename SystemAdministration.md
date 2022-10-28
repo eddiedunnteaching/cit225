@@ -779,5 +779,6 @@ su -
 
 The `-` at the end tells the command that we want a `login` shell.
 
-![dark star root](./images/dark_star.png)
+![dark star root](./images/darkstar_root.png)
+
 

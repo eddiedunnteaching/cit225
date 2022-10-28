@@ -566,7 +566,7 @@ The first step would be to delete the existing partitions. We need to first remi
 
 We can see that `d` is the option that we want. Now we can delete all four partitions.
 
-![part del](./images/part_delete.png)
+![part del](./images/fdisk_delete.png)
 
 ** Note: At this point no changes have been written and if we exit at this point nothing would be done to the disk. **
 

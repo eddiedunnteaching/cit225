@@ -527,7 +527,7 @@ We have discussed the difference between `MBR` and `GPT` partitioning. The class
 
 Both of these tools are similar in the way they operate. In fact newer versions of `fdisk` can also deal with `GPT` partitions.
 
-You can use fdisk with `-l` in non-interactive mode but the easiest way to use `fdisk` is interactive mode. 
+You can use fdisk with `-l` in non-interactive mode where it will come back to the prompt each time but the way we are going to use `fdisk` is in interactive mode. 
 
 When you run `fdisk` you must also specify a disk in which to perform the operations. If you are unsure which device is the correct one you can run commands like `lsblk` or `lsudb` to find the correct device file.
 
@@ -539,7 +539,7 @@ When you run `fdisk` you must also specify a disk in which to perform the operat
 sudo fdisk /dev/sda 
 ```
 
-Since this device is a `USB` Ubuntu installer that is automatically mounted (or at least attempted to be automatically mounted) we get a warning telling us that the device is mounted and you could lose data. Pro Tip: Whenever you are re-partitioning you are going to lose data. Just make sure you are losing data you don;t care about!
+Since this device is a `USB` Ubuntu installer that is automatically mounted (or at least attempted to be automatically mounted) we get a warning telling us that the device is mounted and you could lose data. Pro Tip: Whenever you are re-partitioning you are going to lose data. Just make sure you are losing data you don't care about!
 
 ![fdisk_warn](./images/fdisk_warn.png)
 
@@ -550,7 +550,9 @@ Once we are in the app, the first command we might want to do is list the partit
 ![fdisk p](./images/fdisk_p.png)
 
 
-Here we see the partitions on our `USB` installer. Notice there are 4 partitions. It says `Microsoft` but the first and 3rd are  are `FAT` format that is more compatible and will allow the early stages of the boot to complete.
+Here we see the partitions on our `USB` installer. Notice there are 4 partitions in this example. Depending on the contents of your USB stick you could have more or less than 4 partitions. 
+
+It says `Microsoft` on the first and 3rd. These partitions are  an early version of Microsoft filesystems in the `FAT` format that is more compatible and will allow the early stages of the boot to complete.
 
 Let's say we want to make this disk have one partition that we can use this device to store files. 
 
@@ -586,6 +588,12 @@ As it turns out `fdisk` did in fact remove the partitions. It did not remove the
 
 ![fdisk new](./images/fdisk_new.png)
 
+Mow that we have gotten rid of our partitions let's create a new one to hold our filesystem.
+
+If we hit `m` again we will see that the option to create a new partition is `n`. We will take the default suggestions on size to create a partition that spans the entire disk.
+
+![fdisk new part](./images/fdisk_newpart.png)
+
 Now we have our partition created. Step 1 accomplished. Next we want to create a new filesystem on our new partition of the USB drive to store our files.
 
 This is accomplished by `mkfs`. `mkfs` will do `ext2`, `ext3` or `ext4`. Since we are using `ext4` the command would be:
@@ -599,15 +607,17 @@ Note this time we specified the partition and not the disk like we did with `fdi
 
 As you can see the formatting process creates multiple `super blocks`. `super blocks` are like entry gateways into the filesystem. They know where everything else is. There are multiples in case some are damaged along the way in the life of the filesystem on your drive.
 
-OK now we have step 2 of 3 completed.... 
+OK now we have step 2 of 3 completed.... We have a partition (Step 1) and a new filesyetsm (Step 2). Now we just need to `mount` the fiolesystem to be able to use it.
 
-But before that
+But before that...
 
-Let's switch gears a bit first and grab the `iso` installer for Debian 11. Hint `64-bit PC netinst iso` is the one you want. Go to the following site:
+Let's switch gears a bit first and grab the `iso` installer for Debian 11 and talk a bit about checksums. Here is the download link:
 
-![Ubuntu downloads](https://www.debian.org/download)
+![Ubuntu ISO download](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.5.0-amd64-netinst.iso)
 
-You will notice on this debian download page there are sha512 checksums. `SHA512` is one of those hashing algorithms that we haev discussed before. In this case the hashing algorithm is used to verify the integrity of the downloaded iso file. In order to do this you can use the program `sha512sum` with the sole argument as the debian iso file.
+Remember our discussion of hashing algorithms? Here is yet another use-case for them.
+
+All downloads for linux isos (or any iso really) should have some kind of checksum. In our case debian provides sha512 checksums to check the integrity of what you end up with from the download. `SHA512` is one of those hashing algorithms that we have discussed before. In this case the hashing algorithm is used to verify the integrity of the downloaded iso file. In order to do this you can use the program `sha512sum` with the sole argument as the debian iso file.
 
 ```bash
 sha512sum debian-11.5.0-amd64-netinst.iso
@@ -656,7 +666,7 @@ Where is the debian iso?
 
 It is still there it is just not visible because you mounted another filesystem in that directory. Something to keep in mind. 
 
-Another thing to note is the `lost+found`. We will talk about that a bit later.
+Every ext4 filesystem has a directory called `lost + found` even if no other files are present. This is used by the filesystem to put anypieces of data it may that looks like a file but does not have a place in the directory structure that it lives.
 
 Alright let's make things normal again and unmount the flash drive.
 
@@ -687,6 +697,9 @@ The output indicates that this is an `iso9660` format and has two partitions tha
 
 Your task is to use this USB stick and install `debian` 11.
 
-Remember that you can get into the UEFI/BIOS on the Dell laptops by strategically hitting `F12` very shortly after you see teh Dell logo appear.
+Remember that you can get into the UEFI/BIOS on the Dell laptops by strategically hitting `F12` very shortly after you see the Dell logo appear.
+
+When you get to the end of the installer uncheck the two Desktop options at the top and make sure teh `OpenSSH Server` is checked to complete the installation.
+
 
 

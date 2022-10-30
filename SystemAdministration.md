@@ -347,31 +347,40 @@ To get back to normal login and then enter or just reboot:
 sudo init 5
 ```
 
- In `systemd` however (which is what we are using) to set a default runlevel you must use a symbolic link to link the desired target in `/lib/systemd/system/` to `/etc/systemd/system/default.target` .
+#### Systemctl
 
- As an example to change the default runlevel:
+Systemd has a very useful command called `systemctl` that is used to examine and control the state of running services, targets (aka runlevels) and even how systemd is configured.
 
-```bash
-sudo rm -f /etc/systemd/system/default.target
-```
 
-This command removes the current default target.  **If you left it like this the system would not boot fully**
-
-Now let's make a new `default.target`
+The state that the machine will come up into automatically is called the `default target`. To see what the current default target is we can run:
 
 ```bash
-sudo ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target
+systemctl get-default
 ```
 
-This command will make the GUI login be the default state the machine will come up into on boot.
+![get default](./images/get_default.png)
 
-The different runlevels really just runs a set of scripts that cause the system to start and stop `services` to achieve these states.
+You can also see the current runlevel using the old System V method.
+
+```bash
+runlevel
+```
+
+![runlevel](./images/runlevel.png)
+
+If we want to switch the current running target to multi-user.target (runlevel 3)
+
+```bash
+systemctl isolate multi-user.target
+```
+
+![runlevel3](./images/runlevel3.png)
+
+
+Switching between the different targets/runlevels really just runs a set of scripts that cause the system to start and stop `services` to achieve these states.
 
 A `service` (aka daemon) is a program that runs in the background automatically with no direct user interaction. This does some management or provides functionality that is used by other processes.
 
-#### Systemctl
-
-Systemd has a very useful command called `systemctl` that is used to examine and control the state of running services and even how systemd is configured.
 
 A `service` has 4 states in `systemd`:
 
@@ -607,13 +616,13 @@ Note this time we specified the partition and not the disk like we did with `fdi
 
 As you can see the formatting process creates multiple `super blocks`. `super blocks` are like entry gateways into the filesystem. They know where everything else is. There are multiples in case some are damaged along the way in the life of the filesystem on your drive.
 
-OK now we have step 2 of 3 completed.... We have a partition (Step 1) and a new filesyetsm (Step 2). Now we just need to `mount` the fiolesystem to be able to use it.
+OK now we have step 2 of 3 completed.... We have a partition (Step 1) and a new filesyetsm (Step 2). Now we just need to `mount` the filesystem to be able to use it.
 
 But before that...
 
 Let's switch gears a bit first and grab the `iso` installer for Debian 11 and talk a bit about checksums. Here is the download link:
 
-![Ubuntu ISO download](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.5.0-amd64-netinst.iso)
+![Debian ISO download](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.5.0-amd64-netinst.iso)
 
 Remember our discussion of hashing algorithms? Here is yet another use-case for them.
 

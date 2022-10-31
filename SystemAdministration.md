@@ -750,7 +750,7 @@ On the next screen for simplicity let's select the first option to use one parti
 
 It lastly asks to write changes to the disk and since we selected encryption it will erase the disk before it does the rest.
 
-[data erase](./images/data_erase.png)
+![data erase](./images/data_erase.png)
 
 Why does it do this?
 
@@ -764,7 +764,7 @@ Select default options and allow the installer to do its thing.
 
 When you get to the end of the installer uncheck the two Desktop options at the top and make sure the `OpenSSH Server` is checked to complete the installation. (Hint: Space Bar selects and un-selects)
 
-![no gui deb](./imges/no_gui_deb.png)
+![no gui deb](./images/no_gui_deb.png)
 
 When you get to the `GRUB` setup. It will ask you to select a disk. You must arrow down to select the nvme drive.
 
@@ -789,5 +789,97 @@ su -
 The `-` at the end tells the command that we want a `login` shell.
 
 ![dark star root](./images/darkstar_root.png)
+
+
+This is going to be the experience you have whenever you log into a server that does not have a GUI running. This may seem like you are stuck. Let's explore a few things.
+
+Web browser: You might think that since this is cli only that there is no web browser. That would be incorrect! :)
+
+```bash
+apt install lynx
+```
+
+To launch you just type `lynx`.
+
+It is not very exciting but if you are on a machine with no gui and you need to get to some content on the web it may be one of your only options. Make you realize the importance of the man pages before the web. Also having things printed out so that you can have "dual" screens (One of the screens being a printed page).
+
+Let's make this thing a GUI shall we?
+
+The easiest way to do this is to run the command `tasksel`
+
+```bash
+tasksel
+```
+
+This might look familiar to you from the end of the Text install. It is a `TUI` that will allow us to select what Windowing system we would like to use. As with most everything else in linux there is usually more than one choice. This is no exception.
+
+![tasksel] (./images/tasksel.png)
+
+
+The default Windowing system that Ubuntu ships with is called `Gnome`. It is meant to be feature parity replacement to something like Windows or Mac OS. Another popular one is KDE. Let's try it.
+
+Use the same navigation commands and select KDE and let it do it's thing. (Spacebar to select/unselect, TAB to go to `OK`) 
+
+When things come back up it will look something like this:
+
+![kde login](./kde_login.png)
+
+Log in and kick the tires. It looks different than Gnome and many of the programs are named differently but you will have all the basic programs you might need such as:
+
+1. Browser (Konquerer)
+2. File Manager (Dolphin)
+3. Text Editor (Kate)
+4. Terminal app (Konsole)
+
+
+If you like Gnome better you can always run `tasksel` again to switch back to it or no GUI (sadist mode) or even to Xfce, etc. XFce is great for machine with older hardware as it is very lightweight.
+
+One of the commands that you will find yourself using over and over is `df`. It stands for `disk free` and show you all the mountpoints the system currently has, where they are and how much free space they have. If is usually best to use the `-h` option to make things `human readable`.
+
+```bash
+df -h
+```
+
+![df](./images/df.png)
+
+
+You can also see the free inodes with the `-i`. This is one of those things that is easy to forget. I have run into it a couple of times and it was always one of the last things I thought about.
+
+![df_i](./images/df_i.png)
+
+** If you run out of inodes you can't write any new files even if you have TONS of free disk space**
+
+Another useful command is `du` which can show you the disk use by directory. This command spits out a lot of output so you usually need to have a strategy in how you want to get information out of it.
+
+One of the ways I like to use `du` is to see how much space the current directory is using. You just change into the directory you are wondering about and run:
+
+```bash
+du -ch | grep total
+```
+
+![du_ch](./images/du_ch.png)
+
+If we run this without the grep we get a ton of extra output.
+
+One great place to start if you have a full or quickly filling disk is the following command:
+
+```bash
+du -sh /*
+```
+
+![du_sh](./images/du_sh.png)
+
+
+If you ever find yourself in a situation that a filesystem will not mount there is a very useful tool that could prevent you from having to start recovering from backup. `fsck`.
+
+Aside from being one letter off vulgarity you will liking be saying vulgar words if you ever *really* need to use it.
+
+The key to using `fsck` is that you can't fix a filesystem if it is currently mounted.
+
+![fsck no](./images/fsck_no.png)
+
+What does this mean?
+
+In practice this means that if your main system drive has errors you will need to boot up from another disk in order to be able to repair.
 
 

@@ -855,7 +855,7 @@ One of the ways I like to use `du` is to see how much space the current director
 
 ```bash
 du -ch | grep total
-```
+```ß
 
 ![du_ch](./images/du_ch.png)
 
@@ -880,6 +880,8 @@ The key to using `fsck` is that you can't fix a filesystem if it is currently mo
 
 What does this mean?
 
-In practice this means that if your main system drive has errors you will need to boot up from another disk in order to be able to repair.
+In practice this means that if your main system drive has errors you will need to boot up from another disk in order to be able to repair. 
+
+In our case since we are going to use the USB drives
 
 

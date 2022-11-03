@@ -822,7 +822,7 @@ Use the same navigation commands and select KDE and let it do it's thing. (Space
 
 When things come back up it will look something like this:
 
-![kde login](./kde_login.png)
+![kde login](./images/kde_login.png)
 
 Log in and kick the tires. It looks different than Gnome and many of the programs are named differently but you will have all the basic programs you might need such as:
 

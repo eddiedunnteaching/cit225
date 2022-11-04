@@ -987,7 +987,7 @@ Aside from the fact that we are lazy and automation is awesome. There are other 
 For these reasons we will use a built-in tool debian and ubuntu have called `adduser` 
 
 ```bash
-adduser
+adduser <username>
 ```
 
 ![adduser joe](./images/adduser_joe.png)
@@ -1047,3 +1047,30 @@ usermod -U <username>
 
 
 Account deletion
+
+Sometimes you will need to delete an account entirely. You can do that as well.
+
+```bash
+userdel <username>
+```
+
+![deluser joe doh](./images/deluser_joe_dog.png)
+
+If you try to do it while the user is still logged in remotely you get something like the above. Oops. 
+
+Let's log out and try again
+
+![deluser joy](./images/deluser_joy.png)
+
+
+A more serious note: I have avoided much of the policy, legal and other reasons for organizations having systems, accounts, groups, access controls, etc. You should always be thinking compliance with any specific rules you might be subject to for your industry over and above the normal requirements In general principle of least privilege. Folks should have access to what they need but no more. 
+
+For instance you probably will delete a users account but not their files in the case of a separation. In fact this is the default on debian. If you go back and look there will still be the home directory for the user you deleted present on the system.
+
+This brings up the greater topic of proving ones identity in a world where nobody knows you.
+
+Without getting too far off topic NFT's (non-fungible token) became all the rage last year in connection to collectable art but that is only the tip of the iceberg for what an NFT can do. There has been work done using NFT's as unique identity for humans. 
+
+This has bee given the nickname `Soulbound` token and I think fits in well with this conversation. Here is a great intro video.
+
+https://www.youtube.com/watch?v=Fu4lrv47c0g

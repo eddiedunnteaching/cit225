@@ -916,6 +916,14 @@ In linux a user is really just a number. This number is the userID (UID). The UI
 
 As the name implies this file once contained the password hash for the users (and the placeholder is still there) but since it is world readable for security reasons the actual password hash was moved to `/etc/shadow`.
 
+You can see `/etc/passwd` on your machine:
+
+```bash
+less /etc/etc_passwd
+```
+
+![etc passwd](./images/etc_passwd.png)
+
 The fields this file contain:
 
 1. Login name: Login names are case sensitive like everything else in linux. You should only use alpha numeric characters to avoid weird issues that might arise from using special or punctuation characters. You should try to have a user have the same login name on each system he uses in your organization. As you can see there are lots of entries for system accounts that can't login. We can tell they can't log in because there shell is `/usr/sbin/nologin`.
@@ -924,15 +932,118 @@ The fields this file contain:
 
 3. UserID (UID): Root user will always be UID 0 and is defined first. After that you will see lots of system accounts and other internal accounts but the first `real` user. Meaning one that can log in will typically be `UID` 1000 to allow for lots of non login accounts. You should always keep your UIDS the same for a given user across all your systems. If you have shared filesystems such as network shares and on each system the  user has a differentID you will have a situation where UIDs will not match and they will not be able to access files created with a different UID from a different system. This is solved with a network account setup.
 
-4. Default GroupID (GID): In days of old groups were mainly for billing purposes so that the owners of the system knew who to charge. Now it is more to ease access control administration and be able to apply a broad set of permissions to people with similar job functions. In our case this will almost always be the group that is created by default with your username and you as the only member.
+4. Default GroupID (GID): In days of old groups were mainly for billing purposes so that the owners of the system knew who to charge. Now it is more to ease access control administration and be able to apply a broad set of permissions to people with similar job functions. In our case this will almost always be the group that is created by default with your username and you as the only member. This is done to prevent any unintentional overlap in seeing other users personal information.
 
-5. Name, phone number, etc
-6. Home Directory
-7. Login shell 
+5. Name, phone number, etc: Contains usually comma separated fields containing personal contact information.
+
+6. Home Directory: This field specifies the directory the user will be placed into at login. This is also the location as we have seen of files that are specific to you and configure your environment the way you want it.
+
+7. Login shell: This is the shell program that is run as your login shell. The default for most linux distributions is `bash`. 
 
 
-![etc passwd](./images/etc_passwd.png)
+As we said the actual password hash is now stored in a different file. It is `/etc/shadow`.
 
+Make sure you are `root` for this one.
 
+```bash
+less /etc/shadow
+```
 
 ![etc shadow](./images/etc_shadow.png)
+
+This file has six fields:
+
+1. Login name: This is the index to link the line to the correct account
+2. The actual password hash.
+3. The last time the password was changed
+4. This sets the minimum number of days between changes so that users cannot change back to the one they know after each required change.
+5. Sets maximum number of days between changes. Force change after certain time.
+6. Number of days to warn about password expirations.
+
+
+![etc group](./images/etc_group.png)
+
+As you can see this one has four fields:
+
+1. Group name: The name of the group
+2. Another encrypted password placeholder field
+3. GroupID (GID)
+4. Group members (must separate with commas)
+
+You will notice that the default user is added to several groups by default. This gives the user permissions to do various things in the system. 
+
+A great example of this is `plugdev`. Remember we had to be `root` to mount things? Well `plugdev` is what allows the user to be able to mount USB drives without being root.
+
+## Account creation
+
+** First let's pair up. Find a partner to work with for the rest of class **
+
+The task is for each of you to create accounts for the other on your laptop.
+
+One method for this might include manually making entries in `/etc/passwd`, `/etc/shadow`, and `/etc/group` for the user. Then we would need to create the home directory with the appropriate permissions and a sane default set of initialization files.
+
+Aside from the fact that we are lazy and automation is awesome. There are other reasons we might not want to do this process manually. The first is that human beings make mistakes. The less you leave up to human error the more reliable your systems will be.
+
+For these reasons we will use a built-in tool debian and ubuntu have called `adduser` 
+
+```bash
+adduser
+```
+
+![adduser joe](./images/adduser_joe.png)
+
+
+Choose whatever username you would like for you partner to login with. As you can see it asks a bunch of questions (including password, be kind to each other :) ). When finished the account is created.
+
+Let's go and look at the following files to see the changes that were made.
+
+1. `/etc/passwd`
+2. `/etc/shadow`
+3. `/etc/group`
+
+You will need three pieces of information to login to your partners machine.
+
+1. Username
+2. Password
+3. IP Address
+
+Now you need to figure out each other's IP address. The easiest command to use is:
+
+```bash
+ip addr
+```
+
+Hint: The address you are looking for starts with `172.`
+
+```bash
+ssh <user>@<IP>
+```
+
+If all goes well you should see something like this:
+
+![joe login](./images/joe_login.png)
+
+Play around on your partners system. Try to `su` to root. Does it work? Why or why not?
+
+Let's say you want to run some resource intensive batch process and you don't want the extra overhead of having your partner logged in to your system.
+
+We can lockout a user with the following:
+
+```bash
+usermod -L <username>
+```
+
+![lockout](./images/lockout.png)
+
+Note when you do this it does not forcefully log the user out but the next time they try to connect.
+
+![denied](./images/denied.png) 
+
+You can re-enable them with:
+
+```bash
+usermod -U <username>
+```
+
+
+Account deletion

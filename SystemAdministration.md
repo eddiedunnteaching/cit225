@@ -1063,7 +1063,9 @@ Let's log out and try again
 ![deluser joy](./images/deluser_joy.png)
 
 
-A more serious note: I have avoided much of the policy, legal and other reasons for organizations having systems, accounts, groups, access controls, etc. You should always be thinking compliance with any specific rules you might be subject to for your industry over and above the normal requirements In general principle of least privilege. Folks should have access to what they need but no more. 
+A more serious note: I have avoided much of the policy, legal and other reasons for organizations having systems, accounts, groups, access controls, etc. You should always be thinking compliance with any specific rules you might be subject to for your industry over and above the normal requirements.
+
+In general: principle of least privilege rules the day. Folks should have access to what they need but no more. 
 
 For instance you probably will delete a users account but not their files in the case of a separation. In fact this is the default on debian. If you go back and look there will still be the home directory for the user you deleted present on the system.
 

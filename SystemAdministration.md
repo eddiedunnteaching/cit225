@@ -855,7 +855,7 @@ One of the ways I like to use `du` is to see how much space the current director
 
 ```bash
 du -ch | grep total
-```ß
+```
 
 ![du_ch](./images/du_ch.png)
 
@@ -874,14 +874,65 @@ If you ever find yourself in a situation that a filesystem will not mount there 
 
 Aside from being one letter off vulgarity you will liking be saying vulgar words if you ever *really* need to use it.
 
-The key to using `fsck` is that you can't fix a filesystem if it is currently mounted.
+The key to using `fsck` is:
+
+**You can't fix a filesystem if it is currently mounted.**
 
 ![fsck no](./images/fsck_no.png)
 
-What does this mean?
+In practice this means that if your main system drive has errors and your system will not boot you will need to boot up from another disk (such as a flash drive) in order to be able to repair. 
 
-In practice this means that if your main system drive has errors you will need to boot up from another disk in order to be able to repair. 
+In our case since we are going to fix the USB drives.
 
-In our case since we are going to use the USB drives
+```bash
+fsck /dev/sda1
+```
+
+![fsck](./images/fsck_clean.png)
+
+If there had been any filesystem corruption it would have alerted about what the issue was and offered to fix. It is not used much these days but it is there if you need it.
+
+An interesting thing to note about mount is that by default anything you mount in an ad-hoc manner will not persist between reboots. This is like setting the `PATH` and other shell variables we have seen before.
+
+There luckily is a method that tells the system what to mount when it boots. It is done through a file. The file is `/etc/fstab`
+
+Here is what it looks like on debian 11.
+
+![fstab](./images/fstab.png)
+
+This is just a list of all the filesystems and which mountpoints those filesystems are mounted at boot. If you wanted to add to this list you can just create a new line with all the appropriate fields and viola.
 
 
+
+## User / Identity Management
+
+Earlier in the semester we talked about the difference between a local account that is specific to only one computer. The account you use to log in to your personal laptop is a great example of a local account. 
+
+There are also account that have context beyond one specific system. These are called network or directory accounts. Microsoft Active Directory is a great example of this. You could also argue that something like gmail that you can use to log in to multiple different services is a network account as well. 
+
+Account hygiene as it is called refers to the number of infrequently used accounts with easy to guess passwords that are hanging around in your system. It only takes one of these to give an attacker a foothold into your system.
+
+In linux a user is really just a number. This number is the userID (UID). The UID along with six other pieces of information is traditionally stored in the file `/etc/passwd`.
+
+As the name implies this file once contained the password hash for the users (and the placeholder is still there) but since it is world readable for security reasons the actual password hash was moved to `/etc/shadow`.
+
+The fields this file contain:
+
+1. Login name: Login names are case sensitive like everything else in linux. You should only use alpha numeric characters to avoid weird issues that might arise from using special or punctuation characters. You should try to have a user have the same login name on each system he uses in your organization. As you can see there are lots of entries for system accounts that can't login. We can tell they can't log in because there shell is `/usr/sbin/nologin`.
+
+2. Password hash historical placeholder: The original hashing algorithm was `DES` which quickly became easy to crack. Next up was `MD5` which is now no longer considered secure. Salted `SHA-512` passwords are the current standard.
+
+3. UserID (UID): Root user will always be UID 0 and is defined first. After that you will see lots of system accounts and other internal accounts but the first `real` user. Meaning one that can log in will typically be `UID` 1000 to allow for lots of non login accounts. You should always keep your UIDS the same for a given user across all your systems. If you have shared filesystems such as network shares and on each system the  user has a differentID you will have a situation where UIDs will not match and they will not be able to access files created with a different UID from a different system. This is solved with a network account setup.
+
+4. Default GroupID (GID): In days of old groups were mainly for billing purposes so that the owners of the system knew who to charge. Now it is more to ease access control administration and be able to apply a broad set of permissions to people with similar job functions. In our case this will almost always be the group that is created by default with your username and you as the only member.
+
+5. Name, phone number, etc
+6. Home Directory
+7. Login shell 
+
+
+![etc passwd](./images/etc_passwd.png)
+
+
+
+![etc shadow](./images/etc_shadow.png)

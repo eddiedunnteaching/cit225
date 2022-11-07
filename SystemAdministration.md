@@ -1073,7 +1073,7 @@ This brings up one of the biggest issues we have in computing. Proving who you a
 
 Without getting too far off topic NFT's (non-fungible token) became all the rage last year in connection to collectable art but that is only the tip of the iceberg for what an NFT can do. There has been work done using NFT's as unique identity for humans. 
 
-This has bee given the nickname `Soulbound` token and I think fits in well with this conversation. Here is a great intro video.
+This has been given the nickname `Soulbound` token and I think fits in well with this conversation. Here is a great intro video.
 
 https://www.youtube.com/watch?v=Fu4lrv47c0g
 
@@ -1085,10 +1085,16 @@ Ansible falls into the category of Configuration Management software. Put simple
 
 `Declarative` is a term that means in Ansible you do not say HOW to do something you just specify how you would like things to be as far as the state of the remote system and Ansible will decide what to do to make that so. This means if the server is already in the correct state then Ansible will make no changes.
 
-Another term that is often used when talking about this stuff is `idempotency`. `Idempotency` is one of the principles that you should always keep in mind when using Ansible. This simpley means that if you run your playbook multiple times on the same server then it will only make the necesssary changes and not do anything extra. Or even do something over if it had previously been completed.
+Another term that is often used when talking about this stuff is `idempotency`. `Idempotency` is one of the principles that you should always keep in mind when using Ansible. This simply means that if you run your playbook multiple times on the same server then it will only make the necesssary changes each time (whatever they need to be) and not do anything extra. This also means to not re-do something if it had previously been completed.
+
+Ansible uses a file format called `YAML` that is easy to read and understand. Even non-technical staff can look at these files and see what is going on in a lot of cases. I am not going to talk a log about YAML except that everything is indented with two spaces. It does not like TABs so having a tec editor that will show you the different whitespace characters can be a nice thing to check if you are having issues with syntax.
+
+Ansible is `agentless`. This means that you do not need to install any special software on the node that you are controlling. In out case everything is done over SSH (Ansible does also support windows in which case the way you connect is powershell remoting).
+
+
+![Ansible PDF](./redhat_ansible_intro.pdf)
 
 https://dev.to/grayhat/devops-101-introduction-to-ansible-1n64
 
-![Ansible PDF](./redhat_ansible_intro.pdf)
 
 https://docs.ansible.com/ansible/latest/getting_started/index.html

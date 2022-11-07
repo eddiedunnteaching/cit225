@@ -1054,7 +1054,7 @@ Sometimes you will need to delete an account entirely. You can do that as well.
 userdel <username>
 ```
 
-![deluser joe doh](./images/deluser_joe_dog.png)
+![deluser joe doh](./images/deluser_joe_doh.png)
 
 If you try to do it while the user is still logged in remotely you get something like the above. Oops. 
 
@@ -1069,10 +1069,26 @@ In general: principle of least privilege rules the day. Folks should have access
 
 For instance you probably will delete a users account but not their files in the case of a separation. In fact this is the default on debian. If you go back and look there will still be the home directory for the user you deleted present on the system.
 
-This brings up the greater topic of proving ones identity in a world where nobody knows you.
+This brings up one of the biggest issues we have in computing. Proving who you are.
 
 Without getting too far off topic NFT's (non-fungible token) became all the rage last year in connection to collectable art but that is only the tip of the iceberg for what an NFT can do. There has been work done using NFT's as unique identity for humans. 
 
 This has bee given the nickname `Soulbound` token and I think fits in well with this conversation. Here is a great intro video.
 
 https://www.youtube.com/watch?v=Fu4lrv47c0g
+
+End slight digression...
+
+## Ansible
+
+Ansible falls into the category of Configuration Management software. Put simple it is a tool that lets you do a lot of stuff to a bunch of servers with one command entered at the cli. It is a `declarative` automation technology that can be used to manage many servers from your own laptop.
+
+`Declarative` is a term that means in Ansible you do not say HOW to do something you just specify how you would like things to be as far as the state of the remote system and Ansible will decide what to do to make that so. This means if the server is already in the correct state then Ansible will make no changes.
+
+Another term that is often used when talking about this stuff is `idempotency`. `Idempotency` is one of the principles that you should always keep in mind when using Ansible. This simpley means that if you run your playbook multiple times on the same server then it will only make the necesssary changes and not do anything extra. Or even do something over if it had previously been completed.
+
+https://dev.to/grayhat/devops-101-introduction-to-ansible-1n64
+
+![Ansible PDF](./redhat_ansible_intro.pdf)
+
+https://docs.ansible.com/ansible/latest/getting_started/index.html

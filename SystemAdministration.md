@@ -978,16 +978,20 @@ A great example of this is `plugdev`. Remember we had to be `root` to mount thin
 
 ** First let's pair up. Find a partner to work with for the rest of class **
 
-The task is for each of you to create accounts for the other on your laptop.
+The task is for each of you to create accounts for the other on your laptop. 
 
 One method for this might include manually making entries in `/etc/passwd`, `/etc/shadow`, and `/etc/group` for the user. Then we would need to create the home directory with the appropriate permissions and a sane default set of initialization files.
 
 Aside from the fact that we are lazy and automation is awesome. There are other reasons we might not want to do this process manually. The first is that human beings make mistakes. The less you leave up to human error the more reliable your systems will be.
 
+To make it easy create an account of the same name that your partner uses to login to their computer so you do not have to specify the username.
+
+Also make the passwords easy, we are just learning.
+
 For these reasons we will use a built-in tool debian and ubuntu have called `adduser` 
 
 ```bash
-adduser <username>
+/sbin/adduser <username>
 ```
 
 ![adduser joe](./images/adduser_joe.png)
@@ -1083,7 +1087,7 @@ https://www.youtube.com/watch?v=Fu4lrv47c0g
 
 We have talked about them several times in relation to other topics.
 
-One of the best things about linux is that every distribution ships with its own free App Store. These app stores's are called package managers and while they have gui versions. At their heart they are all command line applications. 
+One of the best things about linux is that every distribution ships with its own free app store. These app stores's are called package managers and while they have gui versions. At their heart they are all command line applications. 
 
 There are two main package formats.
 
@@ -1092,15 +1096,15 @@ There are two main package formats.
 
 These refer to the extension of the filename. Rpm is the Red Hat version and its associated package manager application is yum (really dnf now). Since we are not covering Red Hat in this course we will leave it there.
 
-We are concerned with the .deb files that Debian and Ubuntu use. The files have a particular naming scheme that includes the archtitecure. It is important to understand what architecture you are running on because if you try to install a package with a mis-matched architecture it may not work.
+We are concerned with the .deb files that Debian and Ubuntu use. The files have a particular naming scheme that includes the architecture. It is important to understand what architecture you are running on because if you try to install a package with a mis-matched architecture it may not work.
 
-Most of the computers these days have 64 bit intel chips and the packages will be `x86_64` or `amd64`. You might (but doubtful at this point) run across `i386` which is 32bit intel. If you are on a Mac M1 the architecutre is `arm64`.
+Most of the computers these days have 64 bit intel chips and the packages will be `x86_64` or `amd64`. You might (but doubtful at this point) run across `i386` which is 32 bit intel. If you are on a Mac M1 the architecture is `arm64`.
 
 The program that is used to actually install and remove .deb packages is called `dpkg`. 
 
-In practice dpkg is almost never called directly. The main reason is that dpk can't install any `dependencies`. `Dependencies` are packages that other packages need in order to work.
+In practice dpkg is almost never called directly. The main reason is that dpkg can't install any `dependencies`. `Dependencies` are packages that other packages need in order to work.
 
-In open source software there are relatively few packages that have no dependencies in fact in the time that I took to search for simple deb packages that had no dependencies I came up dueces haha.
+In open source software there are relatively few packages that have no dependencies in fact in the time that I took to search for simple deb packages that had no dependencies I came up deuces haha.
 
 Let's say that we have a package called `my_awesome_app_3.3-1.1_amd64.deb`.
 
@@ -1118,11 +1122,11 @@ The command then to remove the app would be:
 dpkg -r my_awesome_app 
 ```
 
-You could alternatievly use `-P` to purge which would remove all files used by the app.
+You could alternatively use `-P` to purge which would remove all files used by the app.
 
 Notice that you did not specify the version and release. It will not work if you try to specify more than the app name.
 
-`Dpkg` is abole to reconfigure certain applications that have a `tui` setup program. An example of this is the `tz-data` program that sets the time zone of your system.
+`Dpkg` is able to reconfigure certain applications that have a `tui` setup program. An example of this is the `tz-data` program that sets the time zone of your system.
 
 ```bash
 dpkg-reconfigure tzdata
@@ -1214,7 +1218,7 @@ fortune | cowsay | lolcat
 ![fortune cowsay lolcat](./images/fortune_cowsay_lolcat.png)
 
 
-Just like with `dpkg`, `apt` can both remove and purge packages with the `remove` or `purge` keyword. Remember that remove will leave configuration files and other things. Purege removes it all.
+Just like with `dpkg`, `apt` can both remove and purge packages with the `remove` or `purge` keyword. Remember that remove will leave configuration files and other things. Purge removes it all.
 
 ```bash
 apt purge lolcat
@@ -1240,9 +1244,90 @@ Ansible falls into the broader category of Configuration Management software. Pu
 
 `Declarative` is a term that means in Ansible you do not say HOW to do something you just specify how you would like things to be as far as the state of the remote system and Ansible will decide what to do to make that so. This means if the server is already in the correct state then Ansible will make no changes.
 
-Another term that is often used when talking about this stuff is `idempotency`. `Idempotency` is one of the principles that you should always keep in mind when using Ansible. This simply means that if you run your playbook multiple times on the same server then it will only make the necesssary changes each time (whatever they need to be) and not do anything extra. This also means to not re-do something if it had previously been completed.
+Another term that is often used when talking about this stuff is `idempotency`. `Idempotency` is one of the principles that you should always keep in mind when using Ansible. This simply means that if you run your playbook multiple times on the same server then it will only make the necessary changes each time (whatever they need to be) and not do anything extra. This also means to not re-do something if it had previously been completed.
 
 Ansible uses a file format called [YAML](https://yaml.org/) that is easy to read and understand. Even non-technical staff can look at these files and see what is going on in a lot of cases. I am not going to talk a log about YAML except that everything is indented with two spaces. It does not like TABs so having a text editor that will show you the different whitespace characters can be a nice thing to check if you are having issues with syntax.
 
-Ansible is `agentless`. This means that you do not need to install any special software on the node that you are controlling. In out case everything is done over SSH (Ansible does also support windows in which case the way you connect is powershell remoting).
+Ansible is `agentless`. This means that you do not need to install any special software on the node that you are controlling. In our case everything is done over SSH (Ansible does also support windows in which case the way you connect is powershell remoting).
 
+![ansible diagram](./images/ansible_diagram.png)
+
+As the diagram shows the ansible software is installed on the controller node (your laptop). The controller node has a list of all the computers that it knows about called the `inventory` 
+
+We will assume that your partner's laptop is the managed node. This is just one machine we are controlling. 
+
+In a real-world scenario depending on the size of your organization your inventory would likely be dynamically generated from one or more sources.
+
+Think about being able to run the same command and it run on 1000s of computers.
+
+Enough talk... Let's install it. 
+
+The easiest thing to do is to use `apt`. 
+
+```bash
+apt install ansible
+```
+
+Once you have that installed 
+
+Get back to your regular user 
+
+
+One other requirement for ansible is that you have passwordless key authentication setup. You remember that right?
+
+If you have not already make sure you have generated a key pair.
+
+```bash
+ssh-keygen -t ed25519
+```
+
+You can accept all the default options.
+
+Then you will need to copy your public key to the managed node:
+
+```bash
+ssh-copy-id <user>@<IP address>
+```
+
+![sshkeygen ansible](./images/ssh_keygen_ansible.png)
+
+
+Test to make sure you can login without being prompted for a password.
+
+The next step is to create our inventory. Since we are administrators on our machines we can place our inventory in the `/etc/ansible/` directory in a file called `hosts`. 
+
+Get back to a root prompt.
+
+The `/etc/ansible` does not exist so we will need to create it.
+
+```bash
+mkdir /etc/ansible
+```
+
+Now we need to create and edit a file called `hosts` in that directory.
+
+```bash
+nano /etc/ansible/hosts
+```
+
+Once you have that going let's run our first ansible command to see if our inventory is working.
+
+```bash
+ansible all --list-hosts
+```
+
+![ansible inventory](./images/ansible_inventory.png)
+
+Alright now let's run our first module. An ansible module is like a function in a programming language. It is the smallest unit you can have in Ansible. 
+
+Ansible ships with many modules built-in. Here is a [list](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html). Look through that list. Much can be done with these alone.
+
+The easiest way to call a module is with the command `ansible`. This is called the Ad-Hoc method. In fact the Hello World of ansible is the `ping` module. Let's try it.
+
+```bash
+ansible all -m ping
+```
+
+![ansible ping](./images/ansible_ping.png)
+
+Notice that you are able to run the module against your partners machine even without being root.

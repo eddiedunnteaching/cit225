@@ -1155,7 +1155,65 @@ As we have stated already the big issue with `dpkg` is that it cannot deal with 
 In fact if you try to install an application with `dpkg` and it fails due to a dependency issue you can run `apt install -f` to install the dependencies for you. Really neat.
 
 Apt has a feature called repositories where package files and meta data about the packages such as dependencies are stored in a way that `apt` can use.
+
+The repositories that your system knows about are stored in `/etc/apt/sources.list`. Let's take a look.
+
+```bash
+head /etc/apt/sources.list
+```
  
+![apt sources](./images/apt_sources.png)
+
+The command to update our local system apt cache to match what is the most recent listings in our configured repositories. We use the following command.
+
+```bash
+apt update
+```
+
+![apt update](./images/apt_update.png)
+
+
+If there are any packages that can be updated the command would alert you.
+
+If there are update you can upgrade all packages that have new versions available with:
+
+```bash
+apt upgrade 
+```
+
+If you want to know what dependencies a package has you can:
+
+```bash
+apt-cache depends cowsay
+```
+
+![cowsay depend](./images/cowsay_depend.png)
+
+You can install with 
+
+```bash
+apt install cowsay
+```
+
+![install cowsay](./images/install_cowsay.png)
+
+
+You can also install more than one packages at once:
+
+```bash
+apt install fortune lolcat
+```
+
+What is cowsay you say? It is an app that makes cows talk. You need to be a regular user for this.
+
+```bash
+fortune | cowsay | lolcat
+```
+
+
+![fortune cowsay lolcat](./images/fortune_cowsay_lolcat.png)
+
+
 ## Ansible
 
 It is the automation tool [`Ansible`](https://docs.ansible.com/). [`Ansible`](https://docs.ansible.com/) is an open-source automation tool that is simple to use and very powerful. Although it is maintained by and has a paid-support product through `Red Hat` I want to stress that it is a free and open-source product at its core. 

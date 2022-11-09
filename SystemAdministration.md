@@ -1214,6 +1214,15 @@ fortune | cowsay | lolcat
 ![fortune cowsay lolcat](./images/fortune_cowsay_lolcat.png)
 
 
+Just like with `dpkg`, `apt` can both remove and purge packages with the `remove` or `purge` keyword. Remember that remove will leave configuration files and other things. Purege removes it all.
+
+```bash
+apt purge lolcat
+```
+
+![lolcat purge](./images/lolcat_purge.png)
+
+
 ## Ansible
 
 It is the automation tool [`Ansible`](https://docs.ansible.com/). [`Ansible`](https://docs.ansible.com/) is an open-source automation tool that is simple to use and very powerful. Although it is maintained by and has a paid-support product through `Red Hat` I want to stress that it is a free and open-source product at its core. 

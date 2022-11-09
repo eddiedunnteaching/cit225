@@ -1077,24 +1077,105 @@ This has been given the nickname `Soulbound` token and I think fits in well with
 
 https://www.youtube.com/watch?v=Fu4lrv47c0g
 
-End slight digression...
 
+
+## Package managers
+
+We have talked about them several times in relation to other topics.
+
+One of the best things about linux is that every distribution ships with its own free App Store. These app stores's are called package managers and while they have gui versions. At their heart they are all command line applications. 
+
+There are two main package formats.
+
+1. .rpm
+2. .deb
+
+These refer to the extension of the filename. Rpm is the Red Hat version and its associated package manager application is yum (really dnf now). Since we are not covering Red Hat in this course we will leave it there.
+
+We are concerned with the .deb files that Debian and Ubuntu use. The files have a particular naming scheme that includes the archtitecure. It is important to understand what architecture you are running on because if you try to install a package with a mis-matched architecture it may not work.
+
+Most of the computers these days have 64 bit intel chips and the packages will be `x86_64` or `amd64`. You might (but doubtful at this point) run across `i386` which is 32bit intel. If you are on a Mac M1 the architecutre is `arm64`.
+
+The program that is used to actually install and remove .deb packages is called `dpkg`. 
+
+In practice dpkg is almost never called directly. The main reason is that dpk can't install any `dependencies`. `Dependencies` are packages that other packages need in order to work.
+
+In open source software there are relatively few packages that have no dependencies in fact in the time that I took to search for simple deb packages that had no dependencies I came up dueces haha.
+
+Let's say that we have a package called `my_awesome_app_3.3-1.1_amd64.deb`.
+
+This would be an application named `my_awesome_app`, version `3.3` release `1.1` for 64 bit intel machines.
+
+Assuming this file was in the current directory the command to install would be:
+
+```bash
+dpkg -i my_awesome_app_3.3-1.1_amd64.deb
+```
+
+The command then to remove the app would be:
+
+```bash
+dpkg -r my_awesome_app 
+```
+
+You could alternatievly use `-P` to purge which would remove all files used by the app.
+
+Notice that you did not specify the version and release. It will not work if you try to specify more than the app name.
+
+`Dpkg` is abole to reconfigure certain applications that have a `tui` setup program. An example of this is the `tz-data` program that sets the time zone of your system.
+
+```bash
+dpkg-reconfigure tzdata
+```
+
+![dpkg tz](./images/dpkg_tzdata.png)
+
+
+`Dpkg` can also show you currently installed packages.
+
+```bash
+dpkg -l
+```
+
+![dpkg l](./images/dpkg_l.png)
+
+If you want to see what is available to be installed from the `apt` repositories that your system knows about:
+
+```bash
+apt-cache search cowsay
+```
+
+![apt cache cowsay](./images/apt_cache_cowsay.png)
+
+
+As we have stated already the big issue with `dpkg` is that it cannot deal with installing other packages that are needed. Enter `apt`.
+
+`Apt` or the slightly older `apt-get` are typically used as they can deal with downloading the `dependencies` as well. This is really nice.
+
+In fact if you try to install an application with `dpkg` and it fails due to a dependency issue you can run `apt install -f` to install the dependencies for you. Really neat.
+
+Apt has a feature called repositories where package files and meta data about the packages such as dependencies are stored in a way that `apt` can use.
+ 
 ## Ansible
 
-Ansible falls into the category of Configuration Management software. Put simple it is a tool that lets you do a lot of stuff to a bunch of servers with one command entered at the cli. It is a `declarative` automation technology that can be used to manage many servers from your own laptop.
+It is the automation tool [`Ansible`](https://docs.ansible.com/). [`Ansible`](https://docs.ansible.com/) is an open-source automation tool that is simple to use and very powerful. Although it is maintained by and has a paid-support product through `Red Hat` I want to stress that it is a free and open-source product at its core. 
+
+The  name [`Ansible`](https://docs.ansible.com/) comes from Sci Fi. It is first said to have first been mentioned by [Ursula K. Le Guin](https://en.wikipedia.org/wiki/Ursula_K._Le_Guin) and then later used widely in the genre and has come to refer to a device capable of communicating instanteanously across great interstellar distances. So the idea is that you can do that same thing with all your servers. Whether those servers are virtual or physical. Or if they are single user workstations instead. Or  even the machine you are sitting in front of!
+
+In fact [`Ansible`](https://docs.ansible.com/) has thousands of libraries to help with all kinds of automation tasks.
+
+- https://docs.ansible.com/ansible/latest/collections/index.html
+- https://galaxy.ansible.com/
+
+You will find everything from Linux, Windows, MacOS, Cloud Services, a dizzying array of things. 
+
+Ansible falls into the broader category of Configuration Management software. Put simple it is a tool that lets you do a lot of stuff to a bunch of servers with one command entered at the cli. It is a `declarative` automation technology that can be used to manage many servers from your own laptop.
 
 `Declarative` is a term that means in Ansible you do not say HOW to do something you just specify how you would like things to be as far as the state of the remote system and Ansible will decide what to do to make that so. This means if the server is already in the correct state then Ansible will make no changes.
 
 Another term that is often used when talking about this stuff is `idempotency`. `Idempotency` is one of the principles that you should always keep in mind when using Ansible. This simply means that if you run your playbook multiple times on the same server then it will only make the necesssary changes each time (whatever they need to be) and not do anything extra. This also means to not re-do something if it had previously been completed.
 
-Ansible uses a file format called `YAML` that is easy to read and understand. Even non-technical staff can look at these files and see what is going on in a lot of cases. I am not going to talk a log about YAML except that everything is indented with two spaces. It does not like TABs so having a tec editor that will show you the different whitespace characters can be a nice thing to check if you are having issues with syntax.
+Ansible uses a file format called [YAML](https://yaml.org/) that is easy to read and understand. Even non-technical staff can look at these files and see what is going on in a lot of cases. I am not going to talk a log about YAML except that everything is indented with two spaces. It does not like TABs so having a text editor that will show you the different whitespace characters can be a nice thing to check if you are having issues with syntax.
 
 Ansible is `agentless`. This means that you do not need to install any special software on the node that you are controlling. In out case everything is done over SSH (Ansible does also support windows in which case the way you connect is powershell remoting).
 
-
-![Ansible PDF](./redhat_ansible_intro.pdf)
-
-https://dev.to/grayhat/devops-101-introduction-to-ansible-1n64
-
-
-https://docs.ansible.com/ansible/latest/getting_started/index.html

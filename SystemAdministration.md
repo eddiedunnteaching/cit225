@@ -1310,7 +1310,11 @@ Now we need to create and edit a file called `hosts` in that directory.
 nano /etc/ansible/hosts
 ```
 
-Once you have that going let's run our first ansible command to see if our inventory is working.
+To save files in nano. You will use CTRL-O and then it will ask you the filename. If you started `nano` with the file name as above you can simply hit ENTER to save the file with that name. Use CTRL-X to exit. 
+
+You can just hit CTRL-X and it will ask you if you want to save the file as well. Either way will get you there.
+
+Once you have that file created with the IP address let's run our first ansible command to see if our inventory is working.
 
 ```bash
 ansible all --list-hosts
@@ -1331,3 +1335,22 @@ ansible all -m ping
 ![ansible ping](./images/ansible_ping.png)
 
 Notice that you are able to run the module against your partners machine even without being root.
+
+
+## Virtualization
+
+What do we mean when we talk about virtualization? Specifically this is the idea of taking a physical computer and splitting it up into multiple smaller computers. 
+
+The way this is accomplished is by writing computer programs that emulate hardware to these virtual machines. In essence the idea is that the Operating System running on the virtual machine just thinks it is talking to normal hardware like any other computer. This program is called a `hypervisor`.
+
+`Hypervisors` provide the software layer that imitates all the various pieces of hardware that an Operating Systems needs to do its particular function.
+
+![hyper](./images/hyper.png)
+
+Virtualization technology like this was first developed in the 1960's and was around long before there was a situation able to really take advantage of the model.
+
+It was in the 1990's amid the linux and x86 server revolution that the situation became ripe for this technology. Some industry studies were done at that time that showed on average, only 10-15% of server capacity was being used in most data centers. VMware was able to fill this gap with their x86 virtualization platform and have done quite well for themselves over the years. 
+
+
+![Great little article](https://www.dnsstuff.com/what-is-hypervisor). Great little images too that are a lot like others out there.
+

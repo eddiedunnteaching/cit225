@@ -1352,5 +1352,6 @@ Virtualization technology like this was first developed in the 1960's and was ar
 It was in the 1990's amid the linux and x86 server revolution that the situation became ripe for this technology. Some industry studies were done at that time that showed on average, only 10-15% of server capacity was being used in most data centers. VMware was able to fill this gap with their x86 virtualization platform and have done quite well for themselves over the years. 
 
 
-![Great little article](https://www.dnsstuff.com/what-is-hypervisor). Great little images too that are a lot like others out there.
+Great little article: https://www.dnsstuff.com/what-is-hypervisor. 
+
 

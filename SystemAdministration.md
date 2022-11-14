@@ -1337,6 +1337,10 @@ ansible all -m ping
 Notice that you are able to run the module against your partners machine even without being root.
 
 
+## Homelab
+
+Something that I highly recommend for any of you who want to learn about any of this stuff is to simple play with it. A homelab can be really just your laptop with some kind of virtualization software to start. Most any Windows computer you find these days will support virtualization. You may have to turn on a setting in your hardware. 
+
 ## Virtualization
 
 What do we mean when we talk about virtualization? Specifically this is the idea of taking a physical computer and splitting it up into multiple smaller computers. 
@@ -1351,7 +1355,34 @@ Virtualization technology like this was first developed in the 1960's and was ar
 
 It was in the 1990's amid the linux and x86 server revolution that the situation became ripe for this technology. Some industry studies were done at that time that showed on average, only 10-15% of server capacity was being used in most data centers. VMware was able to fill this gap with their x86 virtualization platform and have done quite well for themselves over the years. 
 
+There are two types of Hypervisors that are typically discussed.
 
-Great little article: https://www.dnsstuff.com/what-is-hypervisor. 
+A Type 1 hypervisor runs as the first thing in the stack directly on the metal. This is historically the way virtualization technology was conceptualized and first implemented. 
+
+Linux has a hypervisor technology that has been in the kernel since 2007 called KVM. KVM is a mature technology that turns linux into a Type 1 hypervisor.
+
+
+Let's take a look at a such a Type 1 Hypervisor. Proxmox.
+
+Proxmox is a full-featured virtualization platform that has been around since 2008 and is based on Debian linux and the KVM hypervisor that as we discussed is native to the linux kernel.
+
+It has high availability and fail over clustering features where you can move a running virtual machine from one host to another and it not miss a beat.
+
+I will do a demo of creating a VM with Proxmox now.
+
+Now would be a good time if you are not happy with or cannot get into your laptop to reinstall. I have redone the set of boot sticks I have been bringing in to use a tool called Ventoy that lets you boot from a menu of iso files on the flash drive. If you want to add a new flash drive you just copy a new iso to the device. No re-writing required!
+
+## VirtualBox 
+
+
+Type 2 hypervisors are different in that the virtualization software runs as an application in the `host` or primary operating system. In this scenario the VM's (virtual machines) are running as `guest` operating systems.
+
+ VirtualBox is an example of this type of hypervisor and the one that we will be demonstrating.
+
+There are installation instructions in section `2.3.3.1` of this page: https://www.virtualbox.org/manual/ch02.html
+
+See if you can figure out how to create a VM with one of the iso linux iso files we have worked with (or one you want to try)
+
+Even though it is basically an ad for SolarWinds. Great little article: https://www.dnsstuff.com/what-is-hypervisor. 
 
 

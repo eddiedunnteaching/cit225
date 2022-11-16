@@ -1386,3 +1386,108 @@ See if you can figure out how to create a VM with one of the iso linux iso files
 Even though it is basically an ad for SolarWinds. Great little article: https://www.dnsstuff.com/what-is-hypervisor. 
 
 
+## Installing Ubuntu
+
+Step one is to insert the USB boot stick into your computer.
+
+When you first power on your machine and see the Dell logo, Hit F12. On the prettier Dell screen that comes up look at the left side for the USB drive you have inserted. It will probably have the manufacturer of the drive but also the size is a good indicator you have chosen the correct one.
+
+If all goes well you will see something like
+
+![first_splash](./images/first_splash.png)
+
+Select the top option. `Try or Install Ubuntu`
+
+After the initial loading process you will be presented with a screen like this:
+
+![try_or_install](./images/try_or_install.png)
+
+If you select try you will get what is called a Live distribution where you get a full operating system but it is running in a simulated disk on your system memory and will go away after you reboot. It can be useful for recovery or trying things out but we want to select `Install Ubuntu`
+
+Next screen is the keyboard layout. Select the default options.
+
+![keyboard](./images/keyboard_layout.png)
+
+
+The next scree will require some changes.
+
+1. Select `Minimal Installation`
+2. Check `Install 3rd Party Software...`
+
+![updates and software](./images/updates_and_software.png)
+
+Click `Continue`
+
+On the next screen select `Erase Disk and Install Ubuntu`
+
+![install](./images/install.png)
+
+A pop-up will ask if you are sure you want to write changes to the disk. Select `Continue`
+
+![write_changes](./images/write_changes.png)
+
+The next screen asks our Time Zone. Select New York and click continue.
+
+![tz](./images/tz.png)
+
+The next screen has you setup the initial user. On Ubuntu the first user is automatically added to `sudo` and can use their regular password to escalate privileges to root.
+
+![user](./images/user.png)
+
+Now we are off!
+
+![installing](./images/installing.png)
+
+Once the install finishes you will see something like
+
+![finish](./images/finish.png)
+
+After the reboot you have your brand new system ready to go!
+
+![login](./images/first_login.png)
+
+Login in and let's install VirtualBox
+
+When you first get into the Desktop you will see something like this.
+
+![first](./images/first_screen.png)
+
+
+Click on the bottom left where it says `Show Applications` if you hover your mouse.
+
+On the next modal dialog either type in the box `Terminal` or click on `Terminal`.
+
+![app select](./images/app_select.png)
+
+Now we can use the command to install VirtualBox
+
+```bash
+sudo apt install virtualbox
+```
+
+You will be prompted for the sudo password. This is the same password you used when you setup the account.
+
+![sudo sam](./images/sudo_sam.png)
+
+A bunch of text will go by and you will be asked if you are sure you want to install. We will say yes.
+
+![sure](./images/you_sure.png)
+
+Once the install is complete you are back at the prompt.
+
+![finish](./images/vb_finish.png)
+
+Now you can launch the app by clicking the bottom left again and selecting `VirtualBox`.
+
+![vb_menu](./images/vb_menu.png)
+
+When the app launches you will see something like this:
+
+![vb](./images/vb_start.png)
+
+Before we can install our first VM we need to grab an iso to use for installation. The easiest thing to do will be to grab one from one of the install sticks floating around. Just insert copy directly from the USB to the linux machine and launch the file browser.
+
+![files](./images/files.png)
+
+Look on the left hand side for your USB and then drag an iso from the USB to your Downloads directory. 
+

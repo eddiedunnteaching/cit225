@@ -1489,5 +1489,81 @@ Before we can install our first VM we need to grab an iso to use for installatio
 
 ![files](./images/files.png)
 
-Look on the left hand side for your USB and then drag an iso from the USB to your Downloads directory. 
+Look on the left hand side for your USB and then drag an iso from the USB to your Downloads directory.
+
+Once that is set let's go back to Virtual Box and click on the `New` button.
+
+Here we are creating a new Debian VM. 
+
+![deb test](./images/deb_test_new.png)
+
+On the next screen we select the amount of system RAM we will allocate to the VM. 
+
+Since this is going to be a GUI-less VM we will just select 1 GB (1024 MB) of RAM.
+
+![mem sel](./images/mem_sel.png)
+
+The next screen has us decide if we want to create a new virtual hard drive for this VM, select an existing one or not use a virtual hard drive at all (like in the case of a live distribution).
+
+![hard drive](./images/disk_sel.png)
+
+We will accept the 8 GB default and select `Create`
+
+Now we are asked about what format this new virtual hard drive will be. VDI is the native format for Virtual Box. If we want to use virtual hard drive files from VMware or Microsoft we could select either VHD or VMDK respectively. 
+
+![disk type](./images/disk_type.png)
+
+Since we are only using it with Virtual Box for this demo we can just accept the default, VDI.
+
+The next question is about how we want to allocate the space on the virtual hard drive. We can choose to have Virtual Box allocate space on the actual hard drive as needed (dynamically allocated) or we can have it reserve space for the full size of the disk up front (Fixed Size).
+
+This allows you to over allocate your physical storage knowing there is often much free space allowing you to better utilize your resources. This is a perfect example of why people even do virtualization. To better utilize investments in infrastructure.
+
+If you choose to dynamically allocate (also called thin provisioning) This needs to be carefully managed or you will run out of storage space and crash not one but potentially many servers.
+
+We will choose the default, dynamically allocate
+
+![disk allocation](./images/thin.png)
+
+Next up is setting the maximum size of the virtual hard drive and the place on the physical hard drive that it will reside.
+
+Virtual Box by default creates a directory structure for each VM that includes the virtual hard drive(s).
+
+We will accept the default.
+
+![disk size](./images/vdi_size.png)
+
+This is all that is required to create the VM.
+
+![vb_new](./images/vb_new.png)
+
+Before we start the VM lets look at some of the other configuration options.
+
+Click Settings 
+
+![vb settings](./images/vb_settings.png)
+
+Here you can change many things about the VM. Click around and check out some of the options.
+
+We require installation media for this VM just like we did for the laptop. To "insert" a bootable DVD disc (also known as a .iso file )
+
+Under Storage on the left menu click where it says `empty` and then on the left across a little more click the down triangle by the disk icon and select Choose/Create a virtual optical disk.
+
+![select disc](./images/select_disc.png)
+
+On the next dialog click `Add`  and then navigate to a select the iso file you copied to your Downloads earlier and click Choose
+
+![choose](./images/choose.png)
+
+Another thing while you are here you might want to do is go to System - Processor and up your CPU count.
+
+When you are finished click OK and then 
+
+Start!
+
+
+
+
+
+
 

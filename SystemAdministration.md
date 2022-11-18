@@ -1563,7 +1563,103 @@ Start!
 
 
 
+## What is a Shell?
+
+We discussed the concept of the shell earlier in the semester. The shell is simply the program that is responsible for giving you the command line prompt. It has a long and storied history and since it has historically been the main way folks interact with the operating system, there are many camps.
+
+The default and most widely used shell is `bash` and so far is the only one we have discussed. Another shell present on most systems that is still used though mainly for running scripts is `csh`.
+
+If you want to see what shell are available to install:
+
+```bash
+cat /etc/shells
+```
+
+![shell list](./images/login_shell.png)
+
+As a safety feature if you are a regular user you can only change shells to one that is listed in `/etc/shells`. 
+
+## Zsh
+
+A more recent entry (1990) but very popular shell is called `zsh`. `Zsh` is now the default login shell for Mac OS as well as Kali linux.
+
+We will learn how to switch our shell to `zsh`.
+
+First off we need to install it:
+
+```bash
+sudo apt install zsh
+```
+
+Check the `/etc/shells` list again to verify it is available.
+
+The command to switch a shell is `chsh`. This command really just modifies the users entry in `/etc/passwd` 
 
 
+```bash
+chsh
+```
 
+![chsh](./images/chsh.png)
+
+At this point if you close terminal and launch it again you should have a new shell... right?
+
+Not quite yet. What we changed just now was the `login shell` which is special as previously discussed. Mainly it is the first shell that is run when a user logs in. 
+
+So in order for us to see the change we need to log out and back in. Once we do that we will something like:
+
+![zsh_config](./images/zsh_config.png) 
+
+
+We will select option 2
+
+![setup_zsh](./images/√.png)
+
+Now we have our new shell. Things to notice
+
+1. You are still shown the current directory with `~`
+2. The character for the prompt has changed from `$` to `%`
+3. It has some fancy highlighting.
+
+`Zsh` is cool and gives you some extra features but there are several other shell that build off `zsh` that add even more features.
+
+The one that I use now is called `Oh My Zsh`: https://ohmyz.sh/
+
+Let's install add that to our new `zsh` shell.
+
+Before we can do that we need to also install a couple of other tools. Git and curl. Let's do that now.
+
+```bash
+apt install git curl
+```
+
+Now we can install Oh My Zsh with the incantation from their website:
+
+```bash
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+![install_ohmyzsh](./images/install_ohmyzsh.png)
+
+There are a lot of options here. Zsh has plug-ins and themes that many community members have contributed to make your experience even more customized.
+
+Let's change the theme to one called `gnzh`. We do this by editing our `~/.zshrc` file.
+
+```bash
+nano ~/.zshrc
+```
+
+Find the line that sets the `ZSH_THEME`. It is currently set to `robbyrussell`. 
+
+Let's change that to `gnzh`, save and exit. (Crtl-X, Y, ENTER)
+
+We can make this change live by running:
+
+```bash
+source ~/.zshrc
+```
+
+![gnzh](./images/gnzh.png)
+
+Neat huh?
 
